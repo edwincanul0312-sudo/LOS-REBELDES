@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - dir: LOS_REBELDES_CLIENTE
@@ -35,30 +36,30 @@ jobs:
           gradle-version: '8.10'
 
       - name: Extraer proyecto
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y unzip
-    unzip -o LOS_REBELDES_3_APPS_v1-1.zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-              - name: Compilar APK
-          working-directory: ${{ matrix.dir }}
-          run: |
-            cat > init.gradle <<'EOF'
-            import org.gradle.api.tasks.compile.JavaCompile
-            import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+      - name: Compilar APK
+        working-directory: ${{ matrix.dir }}
+        run: |
+          cat > init.gradle <<'EOF'
+          import org.gradle.api.tasks.compile.JavaCompile
+          import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-            allprojects {
-                tasks.withType(JavaCompile).configureEach {
-                    options.release = 17
-                }
+          allprojects {
+              tasks.withType(JavaCompile).configureEach {
+                  options.release = 17
+              }
 
-                tasks.withType(KotlinCompile).configureEach {
-                    kotlinOptions.jvmTarget = "17"
-                }
-            }
-            EOF
+              tasks.withType(KotlinCompile).configureEach {
+                  kotlinOptions.jvmTarget = "17"
+              }
+          }
+          EOF
 
-            gradle -I init.gradle assembleDebug --no-daemon
+          gradle -I init.gradle assembleDebug --no-daemon
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
