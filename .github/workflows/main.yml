@@ -39,22 +39,22 @@ jobs:
           sudo apt-get install -y unzip
           unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-       - name: Corregir Java y Kotlin
-          working-directory: ${{ matrix.dir }}
-          run: |
-            cat >> app/build.gradle.kts <<'EOF'
+      - name: Corregir Java y Kotlin
+        working-directory: ${{ matrix.dir }}
+        run: |
+          cat >> app/build.gradle.kts <<'EOF'
 
-            // Configuración CI: Java y Kotlin 17
-            android {
-                compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_17
-                    targetCompatibility = JavaVersion.VERSION_17
-                }
-                kotlinOptions {
-                    jvmTarget = "17"
-                }
-            }
-            EOF
+          // Configuración CI: Java y Kotlin 17
+          android {
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+              kotlinOptions {
+                  jvmTarget = "17"
+              }
+          }
+          EOF
 
       - name: Compilar APK
         working-directory: ${{ matrix.dir }}
