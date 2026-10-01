@@ -38,7 +38,7 @@ jobs:
         run: |
           unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-            - name: Compilar APK
+      - name: Compilar APK
         working-directory: ${{ matrix.dir }}
         run: |
           cat > init.gradle <<'EOF'
