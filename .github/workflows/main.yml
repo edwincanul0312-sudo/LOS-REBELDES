@@ -39,7 +39,7 @@ jobs:
           sudo apt-get install -y unzip
           unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-              - name: Corregir Java y Kotlin
+       - name: Corregir Java y Kotlin
           working-directory: ${{ matrix.dir }}
           run: |
             cat >> app/build.gradle.kts <<'EOF'
