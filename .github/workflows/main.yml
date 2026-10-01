@@ -36,7 +36,7 @@ jobs:
 
       - name: Extraer proyecto
         run: |
-          unzip -o LOS_REBELDES_3_APPS_v1.zip
+          unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
       - name: Compilar APK
         working-directory: ${{ matrix.dir }}
