@@ -38,9 +38,20 @@ jobs:
         run: |
           unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-      - name: Compilar APK
+            - name: Compilar APK
         working-directory: ${{ matrix.dir }}
-        run: gradle assembleDebug --no-daemon
+        run: |
+          cat > init.gradle <<'EOF'
+          allprojects {
+              tasks.withType(JavaCompile).configureEach {
+                  options.release = 17
+              }
+              tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                  kotlinOptions.jvmTarget = "17"
+              }
+          }
+          EOF
+          gradle -I init.gradle assembleDebug --no-daemon
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
