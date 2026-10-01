@@ -41,25 +41,11 @@ jobs:
           sudo apt-get install -y unzip
           unzip -o LOS_REBELDES_3_APPS_v1-1.zip
 
-      - name: Compilar APK
+            - name: Compilar APK
         working-directory: ${{ matrix.dir }}
         run: |
-          cat > init.gradle <<'EOF'
-          import org.gradle.api.tasks.compile.JavaCompile
-          import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-          allprojects {
-              tasks.withType(JavaCompile).configureEach {
-                  options.release = 17
-              }
-
-              tasks.withType(KotlinCompile).configureEach {
-                  kotlinOptions.jvmTarget = "17"
-              }
-          }
-          EOF
-
-          gradle -I init.gradle assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon \
+            -Dorg.gradle.java.home="$JAVA_HOME"
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
